@@ -10,9 +10,9 @@ function FiberRootNode(containerInfo) {
 }
 
 /**
- * 创建fiberRoot
+ * 创建fiberRoot,fiberRoot和rootFiber进行关联
  * @param {any} containerInfo - 容器信息
- * @returns {FiberRootNode} - 创建的 Fiber 根节点
+ * @returns {FiberRootNode} - fiberRoot
  */
 export function createFiberRoot(containerInfo) {
   const root = new FiberRootNode(containerInfo);

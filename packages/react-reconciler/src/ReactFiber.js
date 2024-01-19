@@ -38,7 +38,7 @@ export function createFiber(tag, pendingProps, key) {
 }
 
 /**
- * 创建新的HostRoot类型的Fiber节点
+ * 创建rootFiber
  * @returns {FiberNode} 新的HostRoot类型的Fiber节点
  */
 export function createHostRootFiber() {

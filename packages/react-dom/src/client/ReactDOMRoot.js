@@ -29,7 +29,7 @@ ReactDOMRoot.prototype.render = function (children) {
 
 
 /**
- * 创建RootFiber
+ * 创建fiberRoot
  * @param {HTMLElement} container 渲染的元素
  * @returns {ReactDOMRoot} ReactDOMRoot对象
  */
