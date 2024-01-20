@@ -22,7 +22,7 @@ export function initialUpdateQueue(fiber) {
  * @returns {Update} 更新对象
  */
 export function createUpdate() {
-  const update = { tag: UpdateState };
+  const update = { tag: UpdateState, };
   return update;
 }
 
@@ -33,6 +33,7 @@ export function createUpdate() {
  * @returns {FiberNode} fiber根节点
  */
 export function enqueueUpdate(fiber, update) {
+  // rootFiber的更新队列
   const updateQueue = fiber.updateQueue;
   const pending = updateQueue.shared.pending;
 
