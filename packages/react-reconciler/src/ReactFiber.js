@@ -53,6 +53,7 @@ export function createHostRootFiber() {
  */
 export function createWorkInProgress(current, pendingProps) {
   let workInProgress = current.alternate;
+  // 初始化挂载阶段
   if (workInProgress === null) {
     workInProgress = createFiber(current.tag, pendingProps, current.key);
     workInProgress.type = current.type;
@@ -60,6 +61,7 @@ export function createWorkInProgress(current, pendingProps) {
     workInProgress.alternate = current;
     current.alternate = workInProgress;
   } else {
+    // 更新阶段
     workInProgress.pendingProps = pendingProps;
     workInProgress.type = current.type;
     workInProgress.flags = NoFlags;

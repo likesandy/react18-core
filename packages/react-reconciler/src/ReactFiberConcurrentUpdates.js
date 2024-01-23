@@ -1,7 +1,7 @@
 import { HostRoot } from "./ReactWorkTags";
 
 /**
- * 从源 Fiber 向上遍历树，找到根节点。
+ * 从源 Fiber 向上遍历树，找到rootFiber。
  * @param {Fiber} sourceFiber - 源 Fiber。
  * @returns {Node|null} - 如果找到根节点，则返回根节点；否则返回 null。
  */

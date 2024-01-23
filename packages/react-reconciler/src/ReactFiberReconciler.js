@@ -26,6 +26,5 @@ export function updateContainer(element, container) {
   update.payload = { element };
   // 将更新添加到rootFiber的更新队列上，并返回根节点
   const root = enqueueUpdate(current, update);
-  // TODO 在rootFiber上调度更新
   scheduleUpdateOnFiber(root);
 }
