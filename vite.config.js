@@ -18,6 +18,6 @@ export default defineConfig({
     force: true,
   },
   server: {
-    port: 8000
+    port: 3306
   }
 });

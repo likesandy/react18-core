@@ -94,8 +94,10 @@ export function createFiberFromElement(element) {
  * @returns {FiberNode} 新的Fiber节点
  */
 function createFiberFromTypeAndProps(type, key, pendingProps) {
+  // 一开始不知道是什么类型的
   let tag = IndeterminateComponent;
   if (typeof type === "string") {
+    // 'div'
     tag = HostComponent;
   }
   const fiber = createFiber(tag, pendingProps, key);
@@ -111,3 +113,4 @@ function createFiberFromTypeAndProps(type, key, pendingProps) {
 export function createFiberFromText(content) {
   return createFiber(HostText, content, null);
 }
+

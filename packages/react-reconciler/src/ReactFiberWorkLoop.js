@@ -1,6 +1,7 @@
-import { scheduleCallback } from 'scheduler'
+import { scheduleCallback } from 'scheduler';
 import { createWorkInProgress } from './ReactFiber';
 import { beginWork } from './ReactFiberBeginWork';
+import { completeWork } from './ReactFiberCompleteWork';
 
 let workInProgress = null
 
@@ -17,7 +18,7 @@ export function scheduleUpdateOnFiber(root) {
  * @param {*} root fiberRoot
  */
 function ensureRootIsScheduled(root) {
-  scheduleCallback(performConcurrentWorkOnRoot.bind(null, root),);
+  scheduleCallback(performConcurrentWorkOnRoot.bind(null, root));
 }
 
 /**
@@ -68,9 +69,6 @@ function performUnitOfWork(unitOfWork) {
   const current = unitOfWork.alternate
   // 子节点
   let next = beginWork(current, unitOfWork);
-  // TODO 防止死循环
-  workInProgress = null
-  unitOfWork.memoizedProps = unitOfWork.pendingProps
   if (next === null) {
     completeUnitOfWork(unitOfWork)
   } else {
@@ -82,6 +80,21 @@ function performUnitOfWork(unitOfWork) {
 /**
  * Fiber树 -> 真实DOM
  */
-function completeUnitOfWork() {
+function completeUnitOfWork(workInProgress) {
+  let completedWork = workInProgress
+  do {
+    const current = completedWork.alternate
+    const returnFiber = completedWork.return
+    completeWork(current, completedWork)
 
+    const siblingFiber = completedWork.sibling;
+    if (siblingFiber !== null) {
+      workInProgress = siblingFiber;
+      return;
+    }
+
+    completedWork = returnFiber;
+    workInProgress = completedWork;
+
+  } while (completeUnitOfWork !== null)
 }

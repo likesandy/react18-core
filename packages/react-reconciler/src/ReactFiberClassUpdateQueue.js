@@ -52,7 +52,7 @@ export function enqueueUpdate(fiber, update) {
 }
 
 /**
- * 根据老状态和更新队列中的更新计算最新的状态
+ * 根据旧状态和更新队列中的更新计算最新的状态
  * @param {FiberNode} workInProgress - 需要计算新状态的fiber节点
  */
 export function processUpdateQueue(workInProgress) {
