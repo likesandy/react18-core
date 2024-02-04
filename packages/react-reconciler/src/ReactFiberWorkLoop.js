@@ -2,6 +2,9 @@ import { scheduleCallback } from 'scheduler';
 import { createWorkInProgress } from './ReactFiber';
 import { beginWork } from './ReactFiberBeginWork';
 import { completeWork } from './ReactFiberCompleteWork';
+import { HostComponent, HostRoot, HostText } from './ReactWorkTags';
+import { MutationMask, NoFlags } from './ReactFiberFlags';
+import { commitMutationEffectsOnFiber } from './ReactFiberCommitWork';
 
 let workInProgress = null
 
@@ -29,9 +32,10 @@ function performConcurrentWorkOnRoot(root) {
   // TODO 异步渲染
   renderRootSync(root)
   // 渲染后的workInProgress树
-  root.finishedWork = root.current.alternate
+  const finishedWork = root.current.alternate;
+  root.finishedWork = finishedWork;
   // commit阶段
-  // commitRoot(root)
+  commitRoot(root)
 }
 
 
@@ -69,6 +73,7 @@ function performUnitOfWork(unitOfWork) {
   const current = unitOfWork.alternate
   // 子节点
   let next = beginWork(current, unitOfWork);
+  workInProgress = null
   if (next === null) {
     completeUnitOfWork(unitOfWork)
   } else {
@@ -80,12 +85,13 @@ function performUnitOfWork(unitOfWork) {
 /**
  * Fiber树 -> 真实DOM
  */
-function completeUnitOfWork(workInProgress) {
-  let completedWork = workInProgress
+function completeUnitOfWork(unitOfWork) {
+  let completedWork = unitOfWork;
+
   do {
-    const current = completedWork.alternate
-    const returnFiber = completedWork.return
-    completeWork(current, completedWork)
+    const current = completedWork.alternate;
+    const returnFiber = completedWork.return;
+    completeWork(current, completedWork);
 
     const siblingFiber = completedWork.sibling;
     if (siblingFiber !== null) {
@@ -95,6 +101,17 @@ function completeUnitOfWork(workInProgress) {
 
     completedWork = returnFiber;
     workInProgress = completedWork;
+  } while (completedWork !== null);
+}
 
-  } while (completeUnitOfWork !== null)
+function commitRoot(root) {
+  const { finishedWork } = root;
+  const subtreeHasEffects = (finishedWork.subtreeFlags & MutationMask) !== NoFlags;
+  const rootHasEffect = (finishedWork.flags & MutationMask) !== NoFlags;
+
+  if (subtreeHasEffects || rootHasEffect) {
+    commitMutationEffectsOnFiber(finishedWork, root);
+  }
+
+  root.current = finishedWork;
 }

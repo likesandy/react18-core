@@ -1,7 +1,12 @@
-import { createInstance, createTextInstance, finalizeInitialChildren } from "react-dom-bindings/ReactDOMHostConfig,";
-import { HostComponent, HostRoot, HostText } from "./ReactWorkTags";
+import { appendInitialChild, createInstance, createTextInstance, finalizeInitialChildren } from "react-dom-bindings/ReactDOMHostConfig,";
 import { NoFlags } from "./ReactFiberFlags";
+import { HostComponent, HostRoot, HostText } from "./ReactWorkTags";
 
+/**
+ * 完成一个Fiber节点
+ * @param {Fiber} current - 当前旧的Fiber节点
+ * @param {Fiber} workInProgress - 新建的Fiber节点
+ */
 export function completeWork(current, workInProgress) {
   const newProps = workInProgress.pendingProps;
   switch (workInProgress.tag) {
